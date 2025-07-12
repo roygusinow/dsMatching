@@ -1,0 +1,18 @@
+AggregateMethods:
+   matchitDS,
+   getObjectDS,
+   match_summaryDS,
+   eCDFDS,
+   quantileDS,
+   match_summary_subclassDS,
+   dispersionDS,
+   estfunDS,
+   rangeDS_2
+AssignMethods:
+   matchitMetaDS,
+   matchitDS2,
+   genPropDS,
+   assign_IDDS,
+   matchit_subclassDS,
+   hat_diagDS,
+   assign_weights_subclassDS

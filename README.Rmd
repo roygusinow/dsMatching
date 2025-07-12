@@ -1,0 +1,29 @@
+---
+output: github_document
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+## Overview
+
+`dsMatching` provides the server-side implementation required to support causal inference workflows in a federated DataSHIELD environment. Paired with the [dsMatchingClient](https://github.com/roygusinow/dsMatchingClient) package, it enables secure, distributed estimation of treatment effects and matching diagnostics without exposing individual-level data.
+
+## Installation
+
+``` r
+# Install the server-side package from GitHub
+# install.packages("remotes")
+remotes::install_github("roygusinow/dsMatching")
+
+# Installing on remote client using OPAL
+library(opalr)
+o <- opal.login(url = URL, user = USER_NAME, password = PASSWORD)
+oadmin.install_github_package(o, "dsMatching", username="roygusinow", ref = "master")
+```

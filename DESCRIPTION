@@ -1,0 +1,25 @@
+Package: dsMatching
+Type: Package
+Title: Server-side DataSHIELD Matching Method
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Roy", "Gusinow",
+      email = "rgusinow@uni-bonn.de",
+      role = c("aut", "cre")
+    )
+  )
+Description: Tools for federated matching and estimation of average treatment
+    effects (ATE, ATT, and ATC) using DataSHIELD. The package includes robust
+    variance estimators, diagnostics, and matching-based summary plots.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
+Imports:
+  dsBase,
+  stats,
+  FNN,
+  cli
+URL: https://github.com/roygusinow/dsMatching
+BugReports: https://github.com/roygusinow/dsMatching/issues
