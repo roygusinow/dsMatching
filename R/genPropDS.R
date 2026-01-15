@@ -16,35 +16,79 @@
 #'
 #' @author Roy Gusinow
 #' @export
+# genPropDS <- function(formula, coefficents, data, link){
+#
+#   checkPermissivePrivacyControlLevel(c('permissive'))
+#
+#   formula.vars <- all.vars(formula)
+#   data <- eval(parse(text=data), envir = parent.frame())
+#
+#   # intercept - beta_0
+#   estimate <- data[formula.vars[1]]
+#   estimate[,] <- coefficents[1]
+#   colnames(estimate) <- "distance"
+#
+#   for (i in 2:length(formula.vars)){
+#     estimate <- estimate + data[formula.vars[i]] * coefficents[i]
+#   }
+#
+#   # inverse logit
+#   if (link == "identity"){
+#
+#   }else if (link == "logit"){
+#     estimate <- 1 / (1 + exp(-estimate))
+#   }else if (link == "inverse"){
+#     estimate <- 1 / estimate
+#   }else if (link == "log"){
+#     estimate <- exp(estimate)
+#   }
+#   distance <- as.numeric(estimate[["distance"]])
+#
+#   check_formula_length_disclosure_risk(sum(2:length(formula.vars)))
+#   check_subset_disclosure_risk(sum(distance != 0))
+#
+#   return(distance)
+# }
+
 genPropDS <- function(formula, coefficents, data, link){
 
   checkPermissivePrivacyControlLevel(c('permissive'))
 
-  formula.vars <- all.vars(formula)
   data <- eval(parse(text=data), envir = parent.frame())
 
-  # intercept - beta_0
-  estimate <- data[formula.vars[1]]
-  estimate[,] <- coefficents[1]
-  colnames(estimate) <- "distance"
+  # Build model matrix
+  X <- model.matrix(formula, data = data)
+  colnames(X)[colnames(X) == "(Intercept)"] <- "Intercept"
 
-  for (i in 2:length(formula.vars)){
-    estimate <- estimate + data[formula.vars[i]] * coefficents[i]
+  # Align coefficients to model matrix columns
+  if (is.null(names(coefficents))) {
+    stop("Coefficents must be named.")
+  } else {
+    beta <- rep(0, ncol(X))
+    names(beta) <- colnames(X)
+    common <- intersect(names(coefficents), colnames(X))
+    beta[common] <- coefficents[common]
+    if (any(setdiff(colnames(X), names(coefficents)) != "")) {
+      stop("Missing coefficients for some terms.")
+    }
   }
 
-  # inverse logit
-  if (link == "identity"){
+  # Linear predictor
+  eta <- drop(X %*% beta)
 
-  }else if (link == "logit"){
-    estimate <- 1 / (1 + exp(-estimate))
-  }else if (link == "inverse"){
-    estimate <- 1 / estimate
-  }else if (link == "log"){
-    estimate <- exp(estimate)
-  }
-  distance <- as.numeric(estimate[["distance"]])
+  # Link inverse
+  estimate <- switch(
+    link,
+    identity = eta,
+    logit    = plogis(eta),
+    inverse  = 1 / eta,
+    log      = exp(eta),
+    stop("Unsupported link")
+  )
 
-  check_formula_length_disclosure_risk(sum(2:length(formula.vars)))
+  distance <- as.numeric(estimate)
+
+  check_formula_length_disclosure_risk(sum(2:length(all.vars(formula))))
   check_subset_disclosure_risk(sum(distance != 0))
 
   return(distance)

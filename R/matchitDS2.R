@@ -17,6 +17,7 @@ matchitDS2 <- function(data,
                        ids,
                        distances,
                        weights,
+                       subclass,
                        id_name){
 
   checkPermissivePrivacyControlLevel(c('permissive'))
@@ -25,6 +26,7 @@ matchitDS2 <- function(data,
 
   data$distance <- rep(0, dim(data)[1])
   data$weights <- rep(0, dim(data)[1])
+  data$subclass <- rep(0, dim(data)[1])
   log_m <- rep(FALSE, dim(data)[1])
 
   # look in each server and see which records have been matched
@@ -36,6 +38,7 @@ matchitDS2 <- function(data,
 
     data$distance[server_id] <- distances[match_id]
     data$weights[server_id] <- weights[match_id]
+    data$subclass[server_id] <- subclass[match_id]
 
     log_m[server_id] <- TRUE
   }

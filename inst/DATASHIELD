@@ -16,3 +16,5 @@ AssignMethods:
    matchit_subclassDS,
    hat_diagDS,
    assign_weights_subclassDS
+Options:
+  default.privacy_budget = 0.00001

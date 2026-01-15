@@ -4,7 +4,7 @@
 \alias{matchitDS}
 \title{assign function -- new dataframe with matched records}
 \usage{
-matchitDS(formula, data, distance, id_name, k = NULL, std = NULL)
+matchitDS(formula, data, distance, id_name)
 }
 \arguments{
 \item{formula}{formula, character string specifying the treatment variable}
@@ -14,10 +14,6 @@ matchitDS(formula, data, distance, id_name, k = NULL, std = NULL)
 \item{distance}{character string name of column in data containing distance measure}
 
 \item{id_name}{character string for name of ID column in data}
-
-\item{k}{integer, number of nearest neighbors used for k-NN noise}
-
-\item{std}{numeric, standard deviation for normal noise}
 }
 \value{
 A dataframe with ID, treatment, and noise-injected distance column

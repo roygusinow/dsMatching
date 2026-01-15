@@ -19,7 +19,7 @@ RoxygenNote: 7.3.2
 Imports:
   dsBase,
   stats,
-  FNN,
+  VGAM,
   cli
 URL: https://github.com/roygusinow/dsMatching
 BugReports: https://github.com/roygusinow/dsMatching/issues
