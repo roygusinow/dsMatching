@@ -77,9 +77,10 @@ aggr_sum <- function(df, weight_vec = NULL, begin_list = NULL, end_list = NULL, 
   y <- sapply(ecdf_step, mapply, domain_list, SIMPLIFY = F)
   ecdf_diag <- diag(as.matrix(y))
 
-  if (sum(N == 0) > 0) {
-    stop("Disclosure risk: At least one treatment or control has zero observations", call. = FALSE)
-  }
+  # change to filter not including 0
+  # if (sum(N == 0) > 0) {
+  #   stop("Disclosure risk: At least one treatment or control has zero observations", call. = FALSE)
+  # }
 
   out <- list("Sum" = df_sum,
               "Sum Squared" = df_sumsq,
