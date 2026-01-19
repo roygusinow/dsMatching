@@ -32,8 +32,8 @@ matchit_subclassDS <- function(data,
     stop("Disclosure risk: At least one subclass has fewer than nfilter.tab observations.", call. = FALSE)
   }
 
-  weights <- rep(1, nrow(data)) # These are fake weights which are overwritten
-  data <- cbind(data, subclass, weights)
+  # weights <- rep(1, nrow(data)) # These are fake weights which are overwritten
+  data <- cbind(data, subclass)
 
   return(data)
 }

@@ -22,8 +22,8 @@ matchitDS <- function(formula, data, distance, id_name){
 
   if (is.null(thr$default.privacy_budget)){
     # warning("No default privacy budget set at the server side. Setting budget to 10^5")
-    thr$default.privacy_budget <- 10^5
-    # thr$default.privacy_budget <- 10^15 # infinte
+    # thr$default.privacy_budget <- 10^5
+    thr$default.privacy_budget <- 10^20 # infinte
   }
 
   treatment <- data[all.vars(formula)[1]]

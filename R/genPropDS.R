@@ -54,6 +54,12 @@ genPropDS <- function(formula, coefficents, data, link){
 
   checkPermissivePrivacyControlLevel(c('permissive'))
 
+  decode_coef_names <- function(coef_vec) {
+    names(coef_vec) <- gsub(".", ":", names(coef_vec), fixed = TRUE)
+    coef_vec
+  }
+  coefficents <- decode_coef_names(coefficents)
+
   data <- eval(parse(text=data), envir = parent.frame())
 
   # Build model matrix
