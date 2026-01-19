@@ -55,7 +55,7 @@ genPropDS <- function(formula, coefficents, data, link){
   checkPermissivePrivacyControlLevel(c('permissive'))
 
   decode_coef_names <- function(coef_vec) {
-    names(coef_vec) <- gsub("...", ":", names(coef_vec), fixed = TRUE)
+    names(coef_vec) <- gsub("___", ":", names(coef_vec), fixed = TRUE)
     coef_vec
   }
   coefficents <- decode_coef_names(coefficents)
