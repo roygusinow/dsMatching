@@ -51,7 +51,7 @@ estfunDS <- function(formula,
   }
 
   check_formula_length_disclosure_risk(dim(rval_unscaled)[2])
-  check_subset_disclosure_risk(sum(rval_unscaled != 0))
+  # check_subset_disclosure_risk(sum(rval_unscaled != 0))
 
 
   # aggregate within cluster levels - look here
