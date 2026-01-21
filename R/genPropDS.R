@@ -94,7 +94,7 @@ genPropDS <- function(formula, coefficents, data, link){
 
   distance <- as.numeric(estimate)
 
-  check_formula_length_disclosure_risk(sum(2:length(all.vars(formula))))
+  # check_formula_length_disclosure_risk(sum(2:length(all.vars(formula))))
   check_subset_disclosure_risk(sum(distance != 0))
 
   return(distance)

@@ -24,7 +24,9 @@ estfunDS <- function(formula,
                      pred_col,
 
                      correction_type = "HC0",
-                     h_diag = "h_diag"){
+                     h_diag = "h_diag",
+                     using_clusters
+                     ){
 
   checkPermissivePrivacyControlLevel(c('permissive'))
 
@@ -53,26 +55,45 @@ estfunDS <- function(formula,
   check_formula_length_disclosure_risk(dim(rval_unscaled)[2])
   # check_subset_disclosure_risk(sum(rval_unscaled != 0))
 
-
-  # aggregate within cluster levels - look here
-  # rval_unscaled_temp <- apply(rval_unscaled, 2L, rowsum, data[, "subclass"])
-
   # --- subclass aggregation then re-expansion to original row positions ---
-  subclass <- data[, "subclass"]
-  idx_by_subclass <- split(seq_len(nrow(rval_unscaled)), subclass)
+  # subclass <- data[, "subclass"]
+  # idx_by_subclass <- split(seq_len(nrow(rval_unscaled)), subclass)
+  #
+  # summed_by_subclass <- rowsum(rval_unscaled, group = subclass, reorder = FALSE)
+  #
+  # # counts aligned with summed_by_subclass row order
+  # n_by_subclass <- rowsum(rep.int(1L, length(subclass)), group = subclass, reorder = FALSE)
+  # n_by_subclass <- as.integer(n_by_subclass[, 1])
+  #
+  # mean_by_subclass <- sweep(summed_by_subclass, 1L, n_by_subclass, "/")
+  #
+  # rval_unscaled_expanded <- mean_by_subclass[
+  #   match(as.character(subclass), rownames(mean_by_subclass)),
+  #   , drop = FALSE
+  # ]
 
-  summed_by_subclass <- rowsum(rval_unscaled, group = subclass, reorder = FALSE)
 
-  # counts aligned with summed_by_subclass row order
-  n_by_subclass <- rowsum(rep.int(1L, length(subclass)), group = subclass, reorder = FALSE)
-  n_by_subclass <- as.integer(n_by_subclass[, 1])
+  if (using_clusters){
+    # --- subclass aggregation then re-expansion to original row positions ---
+    subclass <- data[, "subclass"]
+    idx_by_subclass <- split(seq_len(nrow(rval_unscaled)), subclass)
 
-  mean_by_subclass <- sweep(summed_by_subclass, 1L, n_by_subclass, "/")
+    summed_by_subclass <- rowsum(rval_unscaled, group = subclass, reorder = FALSE)
 
-  rval_unscaled_expanded <- mean_by_subclass[
-    match(as.character(subclass), rownames(mean_by_subclass)),
-    , drop = FALSE
-  ]
+    # counts aligned with summed_by_subclass row order
+    n_by_subclass <- rowsum(rep.int(1L, length(subclass)), group = subclass, reorder = FALSE)
+    n_by_subclass <- as.integer(n_by_subclass[, 1])
+
+    mean_by_subclass <- sweep(summed_by_subclass, 1L, n_by_subclass, "/")
+
+    rval_unscaled_expanded <- mean_by_subclass[
+      match(as.character(subclass), rownames(mean_by_subclass)),
+      , drop = FALSE
+    ]
+  }else{
+    rval_unscaled_expanded <- t(rval_unscaled) %*% rval_unscaled # this is real a per server unscaled meat matrix
+  }
+
 
   return(rval_unscaled_expanded)
 }

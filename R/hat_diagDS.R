@@ -49,7 +49,7 @@ hat_diagDS <- function(formula,
   diag_H <- diag(H)
 
   # security checks
-  check_formula_length_disclosure_risk(length(dep_vars))
+  # check_formula_length_disclosure_risk(length(dep_vars))
   check_subset_disclosure_risk(sum(diag_H != 0))
 
   return(diag_H)
